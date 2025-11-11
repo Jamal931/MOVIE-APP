@@ -10,8 +10,9 @@ app = Flask(__name__, static_folder='static')
 app.config['OMDB_API_KEY'] = os.getenv('OMDB_API_KEY')
 app.secret_key = 'supersecretkey'  # For session management
 
-if not app.config['OMDB_API_KEY']:
-    raise ValueError("OMDB_API_KEY not set. Please ensure it is set in the 'env' file or as an environment variable.")
+# Get API key from environment variable, with fallback
+app.config['OMDB_API_KEY'] = os.environ.get('OMDB_API_KEY', '37d9e320')
+app.secret_key = os.environ.get('SECRET_KEY', 'supersecretkey')
 
 # Fetch movies from OMDb API (with debug prints)
 def fetch_movies_from_api(query, page=1, year=None, movie_type=None):
